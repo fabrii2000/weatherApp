@@ -136,17 +136,18 @@ class _DetailsWeatherState extends State<DetailsWeather> {
             SizedBox(
               height: global.height(context) * 0.81,
               child: ListView.builder(
-                itemCount: hourList?.length,
+                itemCount: hourList?.length ?? 0,
                 itemBuilder: (context, index) {
-                  String? description = hourDateWeatherMap?.length == 0
+                  String? description = hourDateWeatherMap?.length == null
                       ? " "
                       : hourDateWeatherMap![dateList[_dateIndex]]
                               ?[hourList?[index]]
                           ?.weather
                           ?.first
                           .description;
-                  String? time =
-                      hourList?[index].toString().split("(")[1].split(")")[0];
+                  String? time = hourDateWeatherMap?.length == null
+                      ? " "
+                      : hourList?[index].toString().split("(")[1].split(")")[0];
                   String? iconCode = hourDateWeatherMap?.length == null
                       ? ""
                       : hourDateWeatherMap![dateList[_dateIndex]]
@@ -154,8 +155,9 @@ class _DetailsWeatherState extends State<DetailsWeather> {
                           ?.weather
                           ?.first
                           .icon;
-                  String? temp =
-                      '${hourDateWeatherMap?.length == null && hourDateWeatherMap![dateList[_dateIndex]]?[hourList?[index]]?.main?.temp!.round() == 0 ? "" : hourDateWeatherMap![dateList[_dateIndex]]![hourList?[index]]!.main!.temp!.round() - 273}°C';
+                  String? temp = hourDateWeatherMap?.length == null
+                      ? ""
+                      : '${hourDateWeatherMap?.length == null && hourDateWeatherMap![dateList[_dateIndex]]?[hourList?[index]]?.main?.temp!.round() == 0 ? "" : hourDateWeatherMap![dateList[_dateIndex]]![hourList?[index]]!.main!.temp!.round() - 273}°C';
 
                   return SizedBox(
                     height: global.height(context) * 0.15,
