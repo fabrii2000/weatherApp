@@ -1,6 +1,6 @@
 import 'package:weather_icons/weather_icons.dart';
 
-getIcon({required String? iconCode}){
+getIcon({required String? iconCode}) {
   switch (iconCode) {
     case '01d':
       return WeatherIcons.day_sunny;
@@ -12,7 +12,7 @@ getIcon({required String? iconCode}){
       return WeatherIcons.night_cloudy;
     case '03d' || '03n':
       return WeatherIcons.cloud;
-    case '04d'||'04n':
+    case '04d' || '04n':
       return WeatherIcons.cloudy;
     case '09d':
       return WeatherIcons.day_showers;

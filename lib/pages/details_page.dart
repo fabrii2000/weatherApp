@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:meteo_app/pages/drawer_code.dart';
-import 'package:meteo_app/weather_moment/get_icon.dart';
-import 'package:meteo_app/weather_three_hour/get_three_hour_data.dart';
+import 'package:meteo_app/api_calls/get_weather_three_hour_data.dart';
+import 'package:meteo_app/pages/drawer_widget.dart';
+import 'package:meteo_app/utils/AppColors.dart';
+import 'package:meteo_app/utils/get_color.dart';
+import 'package:meteo_app/utils/get_icon.dart';
 import 'package:weather_icons/weather_icons.dart';
 
-import '../city_suggestion.dart';
-import '../global_variable.dart' as global;
-import '../weather_three_hour/weather_model_three_hour.dart';
-import 'app_bar_code.dart';
+import '../utils/city_suggestion.dart';
+import '../utils/global_variable.dart' as global;
+import '../weather_models/weather_model_three_hour.dart';
+import 'app_bar_widget.dart';
 
 class DetailsWeather extends StatefulWidget {
   final String cityName;
@@ -90,9 +92,9 @@ class _DetailsWeatherState extends State<DetailsWeather> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBarCode(title: widget.cityName),
-        backgroundColor: Color.fromARGB(255, 0, 170, 255),
-        drawer: const DrawerCode(),
+        appBar: AppBarWidget(title: widget.cityName),
+        backgroundColor: AppColors.backGroundColorHome,
+        drawer: const DrawerWidget(),
         body: SingleChildScrollView(
           child: Column(children: <Widget>[
             SizedBox(
@@ -117,8 +119,8 @@ class _DetailsWeatherState extends State<DetailsWeather> {
                         enableFeedback: true,
                         child: Card(
                             color: _dateIndex == index
-                                ? Color.fromARGB(255, 0, 135, 255)
-                                : Color.fromARGB(255, 0, 100, 255),
+                                ? AppColors.colorDayCardSelected
+                                : AppColors.colorDayCard,
                             child: Center(
                               child: Text(
                                 "${daysOfWeek[dateList[index]!.weekday - 1]} ${date}",
@@ -177,8 +179,8 @@ class _DetailsWeatherState extends State<DetailsWeather> {
                             ),
                             SizedBox(width: global.width(context) * 0.03),
                             BoxedIcon(getIcon(iconCode: iconCode),
-                                color: Color.fromARGB(255, 0, 0, 255),
-                                size: global.width(context) * 0.095),
+                                color: getColor(iconCode: iconCode),
+                                size: global.width(context) * 0.085),
                             SizedBox(
                               width: global.width(context) * 0.03,
                             ),

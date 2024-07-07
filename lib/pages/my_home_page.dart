@@ -2,16 +2,19 @@ import 'package:filter_list/filter_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:meteo_app/weather_moment/get_weather.dart';
-import 'package:meteo_app/weather_moment/weather_model.dart';
+import 'package:meteo_app/api_calls/get_weather.dart';
+import 'package:meteo_app/utils/AppColors.dart';
+import 'package:meteo_app/utils/get_color.dart';
+import 'package:meteo_app/weather_models/weather_model.dart';
+import 'package:meteo_app/widgets/text_field_widget.dart';
 import 'package:weather_icons/weather_icons.dart';
 
-import '../filter_widget.dart';
-import '../global_variable.dart' as global;
-import '../weather_moment/get_icon.dart';
-import 'app_bar_code.dart';
+import '../utils/filter_const.dart';
+import '../utils/get_icon.dart';
+import '../utils/global_variable.dart' as global;
+import 'app_bar_widget.dart';
 import 'details_page.dart';
-import 'drawer_code.dart';
+import 'drawer_widget.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -22,7 +25,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController cityController = TextEditingController();
   // List<String?>? _suggestedCities = [];
   bool disableButton = false;
   List<String> cityList = [
@@ -69,8 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 setState(() {
                   if (list != null && list.isNotEmpty) {
                     selectedFilterList = [list.last];
-                  } else {
-                    selectedFilterList = [];
                   }
                   applyFilters();
                 });
@@ -119,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void dispose() {
-    _cityController.dispose();
+    cityController.dispose();
     super.dispose();
   }
 
@@ -129,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
       disableButton = true;
     });
 
-    String cityName = _cityController.text.trim().toLowerCase();
+    String cityName = cityController.text.trim().toLowerCase();
     if (cityName.isEmpty) {
       setState(() {
         disableButton = false;
@@ -150,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
           cityList.insert(0, cityName);
         }
         cityWeatherMap[cityName] = weatherData;
-        _cityController.clear();
+        cityController.clear();
         disableButton = false;
       }
       disableButton = false;
@@ -161,9 +162,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     String titleHomePage = "WEATHER";
     return Scaffold(
-      appBar: AppBarCode(title: titleHomePage),
-      drawer: const DrawerCode(),
-      backgroundColor: Color.fromARGB(255, 0, 170, 255),
+      appBar: AppBarWidget(title: titleHomePage),
+      drawer: const DrawerWidget(),
+      backgroundColor: AppColors.backGroundColorHome,
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -204,7 +205,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor: WidgetStateProperty.all<Color>(
-                            Color.fromARGB(255, 0, 100, 255)),
+                            AppColors.colorFilter),
                         enableFeedback: true,
                       ),
                       onPressed: openFilterDialog,
@@ -219,24 +220,10 @@ class _MyHomePageState extends State<MyHomePage> {
               ]),
             ),
             Padding(
-              padding: EdgeInsets.all(global.width(context) * 0.0357),
-              child: TextField(
-                  controller: _cityController,
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.w500),
-                  decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black, width: 2.0),
-                      ),
-                      iconColor: Colors.black,
-                      labelText: 'city name',
-                      labelStyle: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.w400,
-                        fontSize: global.width(context) * 0.045,
-                      ),
-                      border: OutlineInputBorder())),
-            ),
+                padding: EdgeInsets.all(global.width(context) * 0.0357),
+                child: TextFieldWidget(
+                  controller: cityController,
+                )),
             Padding(
                 padding:
                     EdgeInsets.only(bottom: global.width(context) * 0.0357),
@@ -259,8 +246,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         ?.first
                         .description ??
                     '';
-
-                String temp =
+                int tempInt =
+                    cityWeatherMap[cityList[index]]?.main?.temp == null
+                        ? 0
+                        : cityWeatherMap[cityList[index]]!.main!.temp!.round() -
+                            273;
+                String tempString =
                     '${cityWeatherMap[cityList[index]]?.main?.temp == null ? "" : cityWeatherMap[cityList[index]]!.main!.temp!.round() - 273}°C';
 
                 String tempMin =
@@ -291,14 +282,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   splashColor: Colors.blue[800],
                   enableFeedback: true,
                   child: Card(
-                    color: Colors.white,
+                    color: AppColors.card,
                     child: ListTile(
                       leading: SizedBox(
                         height: global.height(context) * 0.12,
                         width: global.width(context) * 0.12,
                         child: iconCode != null
                             ? BoxedIcon(getIcon(iconCode: iconCode),
-                                color: Color.fromARGB(255, 0, 0, 255),
+                                color: getColor(iconCode: iconCode),
                                 size: global.width(context) * 0.085)
                             : SvgPicture.asset("assets/loading.svg"),
                       ),
@@ -317,26 +308,28 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                               SizedBox(width: 0.025 * global.width(context)),
                               Text(
-                                temp,
+                                tempString,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'ARCADE CLASSIC',
                                     fontSize: 0.025 * global.height(context),
-                                    color: Color.fromARGB(255, 0, 100, 255)),
+                                    color: tempInt >= 20
+                                        ? Colors.red
+                                        : Colors.lightBlue),
                               ),
                               Text(
                                 tempMin,
                                 style: TextStyle(
                                     fontFamily: 'ARCADE CLASSIC',
                                     fontSize: 0.025 * global.height(context),
-                                    color: Color.fromARGB(255, 0, 150, 255)),
+                                    color: Colors.black),
                               ),
                               Text(
                                 tempMax,
                                 style: TextStyle(
                                     fontFamily: 'ARCADE CLASSIC',
                                     fontSize: 0.025 * global.height(context),
-                                    color: Color.fromARGB(255, 0, 150, 255)),
+                                    color: Colors.black),
                               ),
                             ]),
                       ),

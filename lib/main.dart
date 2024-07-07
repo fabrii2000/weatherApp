@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'global_variable.dart' as global;
 import 'pages/my_home_page.dart';
+import 'utils/global_variable.dart' as global;
 
 void main() {
   runApp(const MyApp());

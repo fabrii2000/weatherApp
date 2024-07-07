@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:meteo_app/weather_moment/city_model.dart';
-import 'package:meteo_app/weather_moment/weather_model.dart';
+import 'package:meteo_app/weather_models/city_model.dart';
+import 'package:meteo_app/weather_models/weather_model.dart';
 
 const String apiKey = 'ab101f9adb21c7eee68f5ccc36427e5a';
 
