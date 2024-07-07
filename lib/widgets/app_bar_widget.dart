@@ -11,7 +11,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: AppColors.backGroundColorHome,
+      backgroundColor: AppColors.backGroundColorHomeBlack,
       title: Padding(
           padding: EdgeInsets.only(left: global.width(context) * 0.21),
           child: Text(title,

@@ -1,7 +1,6 @@
 import 'package:filter_list/filter_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:meteo_app/api_calls/get_weather.dart';
 import 'package:meteo_app/utils/AppColors.dart';
 import 'package:meteo_app/utils/get_color.dart';
@@ -44,7 +43,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Map<String?, WeatherModel?> cityWeatherMap = {};
   @override
   void initState() {
-    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       for (String city in cityList) {
         weatherData = await weatherClient.getData(nameCity: city);
@@ -56,6 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
         print(cityWeatherMap);
       }
     });
+    super.initState();
   }
 
   void openFilterDialog() async {
@@ -164,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBarWidget(title: titleHomePage),
       drawer: const DrawerWidget(),
-      backgroundColor: AppColors.backGroundColorHome,
+      backgroundColor: AppColors.backGroundColorHomeBlack,
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -205,14 +204,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor: WidgetStateProperty.all<Color>(
-                            AppColors.colorFilter),
+                            AppColors.textFieldDarkMode),
                         enableFeedback: true,
                       ),
                       onPressed: openFilterDialog,
                       child: Icon(
                         size: global.width(context) * 0.08,
                         Icons.filter_list,
-                        color: Colors.black,
+                        color: AppColors.grey,
                       ),
                     ),
                   ),
@@ -228,12 +227,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding:
                     EdgeInsets.only(bottom: global.width(context) * 0.0357),
                 child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all(
+                            AppColors.textFieldDarkMode)),
                     onPressed: disableButton ? null : () => _addCity(),
                     child: Text(
                       "Search",
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
-                          color: Colors.black,
+                          color: AppColors.grey,
                           fontSize: global.width(context) * 0.04),
                     ))),
             ListView.builder(
@@ -282,17 +284,23 @@ class _MyHomePageState extends State<MyHomePage> {
                   splashColor: Colors.blue[800],
                   enableFeedback: true,
                   child: Card(
-                    color: AppColors.card,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                    color: AppColors.cardBlackMode,
                     child: ListTile(
-                      leading: SizedBox(
-                        height: global.height(context) * 0.12,
-                        width: global.width(context) * 0.12,
-                        child: iconCode != null
-                            ? BoxedIcon(getIcon(iconCode: iconCode),
-                                color: getColor(iconCode: iconCode),
-                                size: global.width(context) * 0.085)
-                            : SvgPicture.asset("assets/loading.svg"),
-                      ),
+                      leading: iconCode != null
+                          ? SizedBox(
+                              height: global.height(context) * 0.12,
+                              width: global.width(context) * 0.12,
+                              child: BoxedIcon(getIcon(iconCode: iconCode),
+                                  color: getColor(iconCode: iconCode),
+                                  size: global.width(context) * 0.085))
+                          : SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: CircularProgressIndicator(
+                                color: AppColors.colorCircularProgress,
+                              )),
                       title: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
@@ -301,7 +309,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Text(
                                 cityList[index],
                                 style: TextStyle(
-                                    color: Colors.black,
+                                    color: AppColors.textColorDarkMode,
                                     fontWeight: FontWeight.w600,
                                     fontFamily: 'ARCADE CLASSIC',
                                     fontSize: 0.025 * global.height(context)),

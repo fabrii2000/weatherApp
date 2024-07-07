@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meteo_app/utils/AppColors.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
@@ -10,7 +11,7 @@ class DrawerWidget extends StatelessWidget {
     List<String> listDrawn = ['weather', 'profile', 'city', 'privacy', 'exit'];
     return Drawer(
       width: sWidth * 0.4,
-      backgroundColor: const Color.fromARGB(255, 0, 170, 255),
+      backgroundColor: AppColors.textFieldDarkMode,
       child: ListView(
         scrollDirection: Axis.vertical,
         padding: EdgeInsets.zero,
@@ -19,23 +20,22 @@ class DrawerWidget extends StatelessWidget {
             width: sWidth * 0.10,
             height: sHeight * 0.12,
             child: const DrawerHeader(
-              decoration:
-                  BoxDecoration(color: Color.fromARGB(255, 0, 170, 255)),
+              decoration: BoxDecoration(color: AppColors.textFieldDarkMode),
               margin: EdgeInsets.all(0),
               child: Text('MENU',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold)),
+                      color: AppColors.grey, fontWeight: FontWeight.bold)),
             ),
           ),
           for (String section in listDrawn)
             ListTile(
               onTap: () {},
-              tileColor: const Color.fromARGB(255, 0, 170, 255),
+              tileColor: AppColors.textFieldDarkMode,
               title: Text(
                 section,
                 style: const TextStyle(
-                  color: Colors.black,
+                  color: AppColors.grey,
                 ),
               ),
             )

@@ -93,7 +93,7 @@ class _DetailsWeatherState extends State<DetailsWeather> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarWidget(title: widget.cityName),
-        backgroundColor: AppColors.backGroundColorHome,
+        backgroundColor: AppColors.backGroundColorHomeBlack,
         drawer: const DrawerWidget(),
         body: SingleChildScrollView(
           child: Column(children: <Widget>[
