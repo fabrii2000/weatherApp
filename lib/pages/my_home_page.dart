@@ -12,9 +12,9 @@ import 'package:weather_icons/weather_icons.dart';
 import '../utils/filter_const.dart';
 import '../utils/get_icon.dart';
 import '../utils/global_variable.dart' as global;
-import 'app_bar_widget.dart';
+import '../widgets/app_bar_widget.dart';
+import '../widgets/drawer_widget.dart';
 import 'details_page.dart';
-import 'drawer_widget.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});

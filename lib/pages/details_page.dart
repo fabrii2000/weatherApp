@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:meteo_app/api_calls/get_weather_three_hour_data.dart';
-import 'package:meteo_app/pages/drawer_widget.dart';
 import 'package:meteo_app/utils/AppColors.dart';
 import 'package:meteo_app/utils/get_color.dart';
 import 'package:meteo_app/utils/get_icon.dart';
+import 'package:meteo_app/widgets/drawer_widget.dart';
 import 'package:weather_icons/weather_icons.dart';
 
 import '../utils/city_suggestion.dart';
 import '../utils/global_variable.dart' as global;
 import '../weather_models/weather_model_three_hour.dart';
-import 'app_bar_widget.dart';
+import '../widgets/app_bar_widget.dart';
 
 class DetailsWeather extends StatefulWidget {
   final String cityName;
