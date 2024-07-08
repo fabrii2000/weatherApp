@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meteo_app/utils/AppColors.dart';
+import 'package:meteo_app/utils/app_colors.dart';
 
 import '../utils/global_variable.dart' as global;
 

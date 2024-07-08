@@ -2,17 +2,14 @@ import 'package:filter_list/filter_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:meteo_app/api_calls/get_weather.dart';
-import 'package:meteo_app/utils/AppColors.dart';
-import 'package:meteo_app/utils/get_color.dart';
+import 'package:meteo_app/utils/app_colors.dart';
 import 'package:meteo_app/weather_models/weather_model.dart';
 import 'package:meteo_app/widgets/text_field_widget.dart';
-import 'package:weather_icons/weather_icons.dart';
 
 import '../utils/filter_const.dart';
 import '../utils/get_icon.dart';
 import '../utils/global_variable.dart' as global;
 import '../widgets/app_bar_widget.dart';
-import '../widgets/drawer_widget.dart';
 import 'details_page.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -62,8 +59,9 @@ class _MyHomePageState extends State<MyHomePage> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          backgroundColor: AppColors.cardBlackMode,
           content: SizedBox(
-            width: double.maxFinite,
+            width: 0.9 * global.width(context),
             child: FilterListWidget<Filter>(
               listData: filterList,
               selectedListData: selectedFilterList,
@@ -162,7 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
     String titleHomePage = "WEATHER";
     return Scaffold(
       appBar: AppBarWidget(title: titleHomePage),
-      drawer: const DrawerWidget(),
+      // drawer: const DrawerWidget(),
       backgroundColor: AppColors.backGroundColorHomeBlack,
       body: SingleChildScrollView(
         child: Column(
@@ -210,7 +208,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onPressed: openFilterDialog,
                       child: Icon(
                         size: global.width(context) * 0.08,
-                        Icons.filter_list,
+                        Icons.reorder,
                         color: AppColors.grey,
                       ),
                     ),
@@ -248,19 +246,19 @@ class _MyHomePageState extends State<MyHomePage> {
                         ?.first
                         .description ??
                     '';
-                int tempInt =
-                    cityWeatherMap[cityList[index]]?.main?.temp == null
-                        ? 0
-                        : cityWeatherMap[cityList[index]]!.main!.temp!.round() -
-                            273;
+                // int tempInt =
+                //     cityWeatherMap[cityList[index]]?.main?.temp == null
+                //         ? 0
+                //         : cityWeatherMap[cityList[index]]!.main!.temp!.round() -
+                //             273;
                 String tempString =
-                    '${cityWeatherMap[cityList[index]]?.main?.temp == null ? "" : cityWeatherMap[cityList[index]]!.main!.temp!.round() - 273}°C';
+                    '${cityWeatherMap[cityList[index]]?.main?.temp == null ? "" : cityWeatherMap[cityList[index]]!.main!.temp!.round() - 273}°';
 
-                String tempMin =
-                    ' ( ${cityWeatherMap[cityList[index]]?.main?.tempMin == null ? "" : cityWeatherMap[cityList[index]]!.main!.tempMin!.round() - 273}';
-
-                String tempMax =
-                    ' - ${cityWeatherMap[cityList[index]]?.main?.tempMax == null ? "" : cityWeatherMap[cityList[index]]!.main!.tempMax!.round() - 273} °C )';
+                // String tempMin =
+                //     ' ( ${cityWeatherMap[cityList[index]]?.main?.tempMin == null ? "" : cityWeatherMap[cityList[index]]!.main!.tempMin!.round() - 273}';
+                //
+                // String tempMax =
+                //     ' - ${cityWeatherMap[cityList[index]]?.main?.tempMax == null ? "" : cityWeatherMap[cityList[index]]!.main!.tempMax!.round() - 273} °C )';
 
                 String humidity =
                     'humidity: ${cityWeatherMap[cityList[index]]?.main?.humidity == null ? "" : cityWeatherMap[cityList[index]]!.main!.humidity}%';
@@ -273,97 +271,100 @@ class _MyHomePageState extends State<MyHomePage> {
                 // String date = ;
 
                 return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              DetailsWeather(cityName: cityList[index])),
-                    );
-                  },
-                  splashColor: Colors.blue[800],
-                  enableFeedback: true,
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                    color: AppColors.cardBlackMode,
-                    child: ListTile(
-                      leading: iconCode != null
-                          ? SizedBox(
-                              height: global.height(context) * 0.12,
-                              width: global.width(context) * 0.12,
-                              child: BoxedIcon(getIcon(iconCode: iconCode),
-                                  color: getColor(iconCode: iconCode),
-                                  size: global.width(context) * 0.085))
-                          : SizedBox(
-                              height: 30,
-                              width: 30,
-                              child: CircularProgressIndicator(
-                                color: AppColors.colorCircularProgress,
-                              )),
-                      title: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                DetailsWeather(cityName: cityList[index])),
+                      );
+                    },
+                    splashColor: Colors.blue[800],
+                    enableFeedback: true,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
+                      color: AppColors.cardBlackMode,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 10, left: 10),
+                                child: SizedBox(
+                                    height: global.width(context) * 0.10,
+                                    width: global.width(context) * 0.10,
+                                    child: iconCode != null
+                                        ? Center(
+                                            child: Icon(
+                                              getIcon(iconCode: iconCode),
+                                              size:
+                                                  global.width(context) * 0.10,
+                                            ),
+                                          )
+                                        : CircularProgressIndicator(
+                                            color:
+                                                AppColors.colorCircularProgress,
+                                          )),
+                              ),
+                              SizedBox(
+                                width: global.width(context) * 0.024,
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 12.0, top: 6),
+                                child: Text(
+                                  cityList[index],
+                                  style: TextStyle(
+                                      color: AppColors.backGroundColorHomeBlack,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: 'ARCADE CLASSIC',
+                                      fontSize: 0.035 * global.height(context)),
+                                ),
+                              ),
+                              Spacer(),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(right: 25, top: 5),
+                                child: Text(
+                                  tempString,
+                                  textAlign: TextAlign.end,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'ARCADE CLASSIC',
+                                      fontSize: 0.050 * global.height(context),
+                                      color:
+                                          AppColors.backGroundColorHomeBlack),
+                                ),
+                              )
+                            ],
+                          ),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(children: <Widget>[
                               Text(
-                                cityList[index],
-                                style: TextStyle(
-                                    color: AppColors.textColorDarkMode,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: 'ARCADE CLASSIC',
-                                    fontSize: 0.025 * global.height(context)),
+                                description,
+                                style: const TextStyle(color: Colors.black),
+                                textAlign: TextAlign.start,
                               ),
                               SizedBox(width: 0.025 * global.width(context)),
                               Text(
-                                tempString,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'ARCADE CLASSIC',
-                                    fontSize: 0.025 * global.height(context),
-                                    color: tempInt >= 20
-                                        ? Colors.red
-                                        : Colors.lightBlue),
+                                humidity,
+                                style: const TextStyle(color: Colors.black),
+                                textAlign: TextAlign.start,
                               ),
-                              Text(
-                                tempMin,
-                                style: TextStyle(
-                                    fontFamily: 'ARCADE CLASSIC',
-                                    fontSize: 0.025 * global.height(context),
-                                    color: Colors.black),
-                              ),
-                              Text(
-                                tempMax,
-                                style: TextStyle(
-                                    fontFamily: 'ARCADE CLASSIC',
-                                    fontSize: 0.025 * global.height(context),
-                                    color: Colors.black),
-                              ),
+                              SizedBox(width: 0.025 * global.width(context)),
+                              Text(speedWind,
+                                  style: const TextStyle(color: Colors.black),
+                                  textAlign: TextAlign.start)
                             ]),
-                      ),
-                      subtitle: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(children: <Widget>[
-                          Text(
-                            description,
-                            style: const TextStyle(color: Colors.black),
-                            textAlign: TextAlign.start,
                           ),
-                          SizedBox(width: 0.025 * global.width(context)),
-                          Text(
-                            humidity,
-                            style: const TextStyle(color: Colors.black),
-                            textAlign: TextAlign.start,
-                          ),
-                          SizedBox(width: 0.025 * global.width(context)),
-                          Text(speedWind,
-                              style: const TextStyle(color: Colors.black),
-                              textAlign: TextAlign.start)
-                        ]),
+                        ],
                       ),
-                    ),
-                  ),
-                );
+                      //
+                    ));
               },
             ),
             SizedBox(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meteo_app/api_calls/get_weather_three_hour_data.dart';
-import 'package:meteo_app/utils/AppColors.dart';
+import 'package:meteo_app/utils/app_colors.dart';
 import 'package:meteo_app/utils/get_color.dart';
 import 'package:meteo_app/utils/get_icon.dart';
 import 'package:meteo_app/widgets/drawer_widget.dart';

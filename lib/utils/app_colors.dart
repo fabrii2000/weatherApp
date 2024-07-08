@@ -12,13 +12,14 @@ extension AppColors on Never {
 
   static const colorDayCardSelected = Color.fromARGB(255, 226, 200, 200);
   static const colorDayCard = Colors.white;
-  static const colorCircularProgress = Colors.white;
+  static const colorCircularProgress = Colors.grey;
   //color filter
   static const colorFilter = Colors.white;
   //text Colors
   static const textColorDarkMode = Colors.white;
   static const white = Colors.white;
   static const grey = Colors.grey;
+  static const colorTextCardCity = Colors.white70;
   //text field color
   static const textFieldDarkMode = Color.fromARGB(255, 38, 38, 40);
   static const textFieldWhiteMode = Color.fromARGB(255, 226, 226, 231);
