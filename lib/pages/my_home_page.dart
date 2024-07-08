@@ -59,7 +59,6 @@ class _MyHomePageState extends State<MyHomePage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: AppColors.cardBlackMode,
           content: SizedBox(
             width: 0.9 * global.width(context),
             child: FilterListWidget<Filter>(
