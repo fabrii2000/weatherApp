@@ -280,89 +280,93 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                     splashColor: Colors.blue[800],
                     enableFeedback: true,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(20.0))),
-                      color: AppColors.cardBlackMode,
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 10, left: 10),
-                                child: SizedBox(
-                                    height: global.width(context) * 0.10,
-                                    width: global.width(context) * 0.10,
-                                    child: iconCode != null
-                                        ? Center(
-                                            child: Icon(
-                                              getIcon(iconCode: iconCode),
-                                              size:
-                                                  global.width(context) * 0.10,
-                                            ),
-                                          )
-                                        : CircularProgressIndicator(
-                                            color:
-                                                AppColors.colorCircularProgress,
-                                          )),
-                              ),
-                              SizedBox(
-                                width: global.width(context) * 0.024,
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 12.0, top: 6),
-                                child: Text(
-                                  cityList[index],
-                                  style: TextStyle(
-                                      color: AppColors.backGroundColorHomeBlack,
-                                      fontWeight: FontWeight.w600,
-                                      fontFamily: 'ARCADE CLASSIC',
-                                      fontSize: 0.035 * global.height(context)),
+                    child: SizedBox(
+                      height: global.height(context)*0.12,
+                      width: global.width(context)*0.85,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0))),
+                        color: AppColors.cardBlackMode,
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 10, left: 10),
+                                  child: SizedBox(
+                                      height: global.width(context) * 0.10,
+                                      width: global.width(context) * 0.10,
+                                      child: iconCode != null
+                                          ? Center(
+                                              child: Icon(
+                                                getIcon(iconCode: iconCode),
+                                                size:
+                                                    global.width(context) * 0.10,
+                                              ),
+                                            )
+                                          : CircularProgressIndicator(
+                                              color:
+                                                  AppColors.colorCircularProgress,
+                                            )),
                                 ),
-                              ),
-                              Spacer(),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(right: 25, top: 5),
-                                child: Text(
-                                  tempString,
-                                  textAlign: TextAlign.end,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'ARCADE CLASSIC',
-                                      fontSize: 0.050 * global.height(context),
-                                      color:
-                                          AppColors.backGroundColorHomeBlack),
+                                SizedBox(
+                                  width: global.width(context) * 0.024,
                                 ),
-                              )
-                            ],
-                          ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(children: <Widget>[
-                              Text(
-                                description,
-                                style: const TextStyle(color: Colors.black),
-                                textAlign: TextAlign.start,
-                              ),
-                              SizedBox(width: 0.025 * global.width(context)),
-                              Text(
-                                humidity,
-                                style: const TextStyle(color: Colors.black),
-                                textAlign: TextAlign.start,
-                              ),
-                              SizedBox(width: 0.025 * global.width(context)),
-                              Text(speedWind,
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 12.0, top: 6),
+                                  child: Text(
+                                    cityList[index],
+                                    style: TextStyle(
+                                        color: AppColors.backGroundColorHomeBlack,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: 'ARCADE CLASSIC',
+                                        fontSize: 0.035 * global.height(context)),
+                                  ),
+                                ),
+                                Spacer(),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(right: 25, top: 5),
+                                  child: Text(
+                                    tempString,
+                                    textAlign: TextAlign.end,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'ARCADE CLASSIC',
+                                        fontSize: 0.050 * global.height(context),
+                                        color:
+                                            AppColors.backGroundColorHomeBlack),
+                                  ),
+                                )
+                              ],
+                            ),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(children: <Widget>[
+                                Text(
+                                  description,
                                   style: const TextStyle(color: Colors.black),
-                                  textAlign: TextAlign.start)
-                            ]),
-                          ),
-                        ],
+                                  textAlign: TextAlign.start,
+                                ),
+                                SizedBox(width: 0.025 * global.width(context)),
+                                Text(
+                                  humidity,
+                                  style: const TextStyle(color: Colors.black),
+                                  textAlign: TextAlign.start,
+                                ),
+                                SizedBox(width: 0.025 * global.width(context)),
+                                Text(speedWind,
+                                    style: const TextStyle(color: Colors.black),
+                                    textAlign: TextAlign.start)
+                              ]),
+                            ),
+                          ],
+                        ),
+                        //
                       ),
-                      //
                     ));
               },
             ),

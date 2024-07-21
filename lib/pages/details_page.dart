@@ -29,13 +29,11 @@ class _DetailsWeatherState extends State<DetailsWeather> {
   List<DateTime?> dateList = [];
   List<TimeOfDay?>? hourList = [];
   int _dateIndex = 0;
-  @override
-  void initState() {
-    super.initState();
 
+  Future<Map<DateTime?, Map<TimeOfDay?, WeatherList?>>?> callApi() async{
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       weatherDataThreeHour =
-          await weatherClient?.getDataThreeHour(nameCity: widget.cityName);
+      await weatherClient?.getDataThreeHour(nameCity: widget.cityName);
       List<WeatherList>? weatherAllList =
           weatherDataThreeHour?.weatherList ?? [];
       DateTime dateTime;
@@ -74,6 +72,11 @@ class _DetailsWeatherState extends State<DetailsWeather> {
       });
       setState(() {});
     });
+    return hourDateWeatherMap;
+  }
+  @override
+  void initState() {
+    super.initState();
   }
 
   void ChangeDate({required index}) {
@@ -95,121 +98,134 @@ class _DetailsWeatherState extends State<DetailsWeather> {
         appBar: AppBarWidget(title: widget.cityName),
         backgroundColor: AppColors.backGroundColorHomeBlack,
         drawer: const DrawerWidget(),
-        body: SingleChildScrollView(
-          child: Column(children: <Widget>[
-            SizedBox(
-              height: global.height(context) * 0.01,
-            ),
-            Row(children: <Widget>[
-              SizedBox(
-                height: global.height(context) * 0.05,
-                width: global.width(context),
-                child: ListView.builder(
-                  itemCount: dateList.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    String date =
-                        dateList[index].toString().split(" ")[0].split("-")[2];
-
-                    return SizedBox(
-                      width: global.width(context) * 0.38,
-                      height: global.height(context) * 0.01,
-                      child: InkWell(
-                        onTap: () => ChangeDate(index: index),
-                        enableFeedback: true,
-                        child: Card(
-                            color: _dateIndex == index
-                                ? AppColors.colorDayCardSelected
-                                : AppColors.colorDayCard,
-                            child: Center(
-                              child: Text(
-                                "${daysOfWeek[dateList[index]!.weekday - 1]} ${date}",
-                              ),
-                            )),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ]),
-            SizedBox(
-              height: global.height(context) * 0.01,
-            ),
-            SizedBox(
-              height: global.height(context) * 0.81,
-              child: ListView.builder(
-                itemCount: hourList?.length ?? 0,
-                itemBuilder: (context, index) {
-                  String? description = hourDateWeatherMap?.length == null
-                      ? " "
-                      : hourDateWeatherMap![dateList[_dateIndex]]
-                              ?[hourList?[index]]
-                          ?.weather
-                          ?.first
-                          .description;
-                  String? time = hourDateWeatherMap?.length == null
-                      ? " "
-                      : hourList?[index].toString().split("(")[1].split(")")[0];
-                  String? iconCode = hourDateWeatherMap?.length == null
-                      ? ""
-                      : hourDateWeatherMap![dateList[_dateIndex]]
-                              ?[hourList?[index]]
-                          ?.weather
-                          ?.first
-                          .icon;
-                  String? temp = hourDateWeatherMap?.length == null
-                      ? ""
-                      : '${hourDateWeatherMap?.length == null && hourDateWeatherMap![dateList[_dateIndex]]?[hourList?[index]]?.main?.temp!.round() == 0 ? "" : hourDateWeatherMap![dateList[_dateIndex]]![hourList?[index]]!.main!.temp!.round() - 273}°C';
-
-                  return SizedBox(
-                    height: global.height(context) * 0.15,
-                    child: Card(
-                      child: SingleChildScrollView(
+        body: FutureBuilder<Map<DateTime?, Map<TimeOfDay?, WeatherList?>>?>(
+          future: callApi(),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Errore nel caricamento dei dati'));
+            } else if (snapshot.hasData) {
+              return  SingleChildScrollView(
+                child: Column(children: <Widget>[
+                  SizedBox(
+                    height: global.height(context) * 0.01,
+                  ),
+                  Row(children: <Widget>[
+                    SizedBox(
+                      height: global.height(context) * 0.05,
+                      width: global.width(context),
+                      child: ListView.builder(
+                        itemCount: dateList.length,
                         scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: global.width(context) * 0.035,
+                        itemBuilder: (context, index) {
+                          String date =
+                          dateList[index].toString().split(" ")[0].split("-")[2];
+
+                          return SizedBox(
+                            width: global.width(context) * 0.38,
+                            height: global.height(context) * 0.01,
+                            child: InkWell(
+                              onTap: () => ChangeDate(index: index),
+                              enableFeedback: true,
+                              child: Card(
+                                  color: _dateIndex == index
+                                      ? AppColors.colorDayCardSelected
+                                      : AppColors.colorDayCard,
+                                  child: Center(
+                                    child: Text(
+                                      "${daysOfWeek[dateList[index]!.weekday - 1]} ${date}",
+                                    ),
+                                  )),
                             ),
-                            Text(
-                              "$time",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: global.height(context) * 0.033),
-                            ),
-                            SizedBox(width: global.width(context) * 0.03),
-                            BoxedIcon(getIcon(iconCode: iconCode),
-                                color: getColor(iconCode: iconCode),
-                                size: global.width(context) * 0.085),
-                            SizedBox(
-                              width: global.width(context) * 0.03,
-                            ),
-                            Text(
-                              "${temp}",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: global.height(context) * 0.033),
-                            ),
-                            SizedBox(
-                              width: global.width(context) * 0.03,
-                            ),
-                            Text("${description}"),
-                            SizedBox(
-                              width: global.width(context) * 0.035,
-                            ),
-                          ],
-                        ),
+                          );
+                        },
                       ),
                     ),
-                  );
-                },
-              ),
-            ),
-            SizedBox(
-              height: global.height(context) * 0.01,
-            ),
-            SizedBox(height: global.height(context) * 0.01),
-          ]),
+                  ]),
+                  SizedBox(
+                    height: global.height(context) * 0.01,
+                  ),
+                  SizedBox(
+                    height: global.height(context) * 0.81,
+                    child: ListView.builder(
+                      itemCount: hourList?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        String? description = hourDateWeatherMap?.length == null
+                            ? " "
+                            : hourDateWeatherMap![dateList[_dateIndex]]
+                        ?[hourList?[index]]
+                            ?.weather
+                            ?.first
+                            .description;
+                        String? time = hourDateWeatherMap?.length == null
+                            ? " "
+                            : hourList?[index].toString().split("(")[1].split(")")[0];
+                        String? iconCode = hourDateWeatherMap?.length == null
+                            ? ""
+                            : hourDateWeatherMap![dateList[_dateIndex]]
+                        ?[hourList?[index]]
+                            ?.weather
+                            ?.first
+                            .icon;
+                        String? temp = hourDateWeatherMap?.length == null
+                            ? ""
+                            : '${hourDateWeatherMap?.length == null && hourDateWeatherMap![dateList[_dateIndex]]?[hourList?[index]]?.main?.temp!.round() == 0 ? "" : hourDateWeatherMap![dateList[_dateIndex]]![hourList?[index]]!.main!.temp!.round() - 273}°C';
+
+                        return SizedBox(
+                          height: global.height(context) * 0.15,
+                          child: Card(
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: global.width(context) * 0.035,
+                                  ),
+                                  Text(
+                                    "$time",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: global.height(context) * 0.033),
+                                  ),
+                                  SizedBox(width: global.width(context) * 0.03),
+                                  BoxedIcon(getIcon(iconCode: iconCode),
+                                      color: getColor(iconCode: iconCode),
+                                      size: global.width(context) * 0.085),
+                                  SizedBox(
+                                    width: global.width(context) * 0.03,
+                                  ),
+                                  Text(
+                                    "${temp}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: global.height(context) * 0.033),
+                                  ),
+                                  SizedBox(
+                                    width: global.width(context) * 0.03,
+                                  ),
+                                  Text("${description}"),
+                                  SizedBox(
+                                    width: global.width(context) * 0.035,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: global.height(context) * 0.01,
+                  ),
+                  SizedBox(height: global.height(context) * 0.01),
+                ]),
+              );
+            } else {
+            return Center(child: Text('Nessun dato disponibile'));
+            }  },
+
         ));
   }
 }
