@@ -4,17 +4,20 @@ import 'package:meteo_app/utils/app_colors.dart';
 import '../utils/global_variable.dart' as global;
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
+  final String? title;
+  final List<Widget>? actions;
 
-  const AppBarWidget({super.key, required this.title});
+  const AppBarWidget({super.key, this.title,  this.actions});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      flexibleSpace: FlexibleSpaceBar(),
+      actions: actions,
       backgroundColor: AppColors.backGroundColorHomeBlack,
       title: Padding(
           padding: EdgeInsets.only(left: global.width(context) * 0.21),
-          child: Text(title,
+          child: Text(title ?? "",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
